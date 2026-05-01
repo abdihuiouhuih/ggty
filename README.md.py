@@ -1,12 +1,42 @@
 import streamlit as st
 
 # 1. إعدادات الصفحة
-st.set_page_config(page_title="تطبيق التحديات المتكامل", layout="centered")
+st.set_page_config(page_title="تطبيق التحديات - عبدالله الأحمري", layout="centered")
 
-# تنسيق اللغة العربية
-st.markdown("""<style> .main { text-align: right; direction: rtl; } div[data-testid="stBlock"] { direction: rtl; } button { border-radius: 12px; height: 3em; font-weight: bold; } </style>""", unsafe_allow_html=True)
+# تنسيق الواجهة ودعم العربية مع إضافة ستايل للحقوق في الأسفل
+st.markdown("""
+    <style>
+    .main { text-align: right; direction: rtl; }
+    div[data-testid="stBlock"] { direction: rtl; }
+    button { border-radius: 12px; height: 3em; font-weight: bold; }
+    
+    /* ستايل الحقوق */
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f0f2f6;
+        color: #31333F;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-top: 1px solid #e6e9ef;
+        z-index: 999;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-# 2. إدارة التنقل بين الصفحات
+# 2. وظيفة عرض الحقوق (تظهر في كل الصفحات)
+def show_copyright():
+    st.markdown(f"""
+        <div class="footer">
+            جميع الحقوق محفوظة © 2026 | تطوير: عبدالله الأحمري 👨‍💻
+        </div>
+        """, unsafe_allow_html=True)
+
+# 3. إدارة التنقل بين الصفحات
 if 'page' not in st.session_state:
     st.session_state.page = 'main'
 
@@ -54,7 +84,6 @@ elif st.session_state.page == 'fitness':
     if st.button("احسب احتياجي من السعرات"):
         bmr = (10 * w) + (6.25 * h) - (5 * age) + 5
         st.success(f"سعراتك الأساسية هي: {bmr:.0f} سعرة.")
-        st.info(f"للحفاظ على وزنك تحتاج تقريباً {round(bmr * 1.375)} سعرة يومياً.")
 
 # --- صفحة ترك العادات ---
 elif st.session_state.page == 'habits':
@@ -70,10 +99,9 @@ elif st.session_state.page == 'habits':
     
     if st.button("تحليل التأثير"):
         total = times * 365 * years
-        st.error(f"لقد مارست هذه العادة حوالي {total:,} مرة خلال {years} سنوات!")
-        st.write("الهدف: صفر ممارسة لمدة 21 يوم متواصلة.")
+        st.error(f"لقد مارست هذه العادة حوالي {total:,} مرة!")
 
-# --- صفحة تحدي الدراسة (التخصصات الموسعة) ---
+# --- صفحة تحدي الدراسة ---
 elif st.session_state.page == 'study':
     st.title("📚 مركز التخطيط الدراسي")
     if st.button("⬅️ العودة للرئيسية"):
@@ -81,40 +109,21 @@ elif st.session_state.page == 'study':
         st.rerun()
     
     st.divider()
-    
-    # اختيار المجال الكبير
     category = st.selectbox("اختر مجال دراستك:", [
         "هندسة الحاسب والأمن السيبراني", 
         "تطوير البرمجيات والذكاء الاصطناعي", 
-        "الهندسة المدنية والميكانيكية",
         "العلوم الإدارية والمالية", 
-        "العلوم الصحية والطب",
-        "اللغات والترجمة"
+        "تخصصات أخرى"
     ])
-
-    # تخصصات فرعية بناءً على اختيارك
-    if category == "هندسة الحاسب والأمن السيبراني":
-        sub = st.selectbox("التخصص الدقيق:", ["Network Engineering (Cisco)", "Cybersecurity (SOC/Pentesting)", "Cloud Computing (AWS/Azure)", "Hardware Engineering"])
-    elif category == "تطوير البرمجيات والذكاء الاصطناعي":
-        sub = st.selectbox("التخصص الدقيق:", ["Frontend (React/Vue)", "Backend (Node/Python)", "Data Science", "AI & Robotics"])
-    elif category == "العلوم الإدارية والمالية":
-        sub = st.selectbox("التخصص الدقيق:", ["إدارة أعمال", "محاسبة", "تسويق رقمي", "علاقات عامة"])
-    else:
-        sub = st.text_input("اكتب تخصصك بدقة:")
-
-    hours = st.slider("ساعات الدراسة المستهدفة اليوم:", 1, 12, 4)
+    
+    sub = st.text_input("اكتب تخصصك الدقيق:")
+    hours = st.slider("ساعات الدراسة اليومية:", 1, 12, 4)
 
     if st.button("توليد خطة الدراسة"):
         st.write(f"### 📋 خطة الـ {hours} ساعات لتخصص {sub}:")
-        
-        # منطق توزيع الخطة
-        if "Cisco" in sub or "Network" in sub:
-            st.success(f"• أول {hours*0.5:.1f} ساعة: تطبيق عملي على Packet Tracer أو GNS3.")
-            st.info(f"• باقي الوقت: مراجعة نظريات البروتوكولات ورسم الشبكة.")
-        elif "Security" in sub or "Cyber" in sub:
-            st.success(f"• أول {hours*0.6:.1f} ساعة: تدريب على منصات مثل TryHackMe أو التحقق من الثغرات.")
-            st.info(f"• باقي الوقت: قراءة تقارير أمنية أو مراجعة أدوات اللينكس.")
-        else:
-            st.success(f"• 60% من الوقت: قراءة وفهم المبادئ الأساسية.")
-            st.info(f"• 40% من الوقت: تلخيص وحل أسئلة السنوات السابقة.")
+        st.success(f"• ركز أول {hours*0.6:.1f} ساعة على المهام الصعبة والعملية.")
+        st.info(f"• خصص الوقت المتبقي للمراجعة والتلخيص.")
         st.balloons()
+
+# عرض الحقوق في أسفل كل صفحة
+show_copyright()
