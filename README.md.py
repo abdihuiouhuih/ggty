@@ -1,145 +1,137 @@
 import streamlit as st
 
-# --- إعدادات الصفحة ---
+# --- إعدادات الصفحة الأساسية ---
 st.set_page_config(page_title="منصة عبد الله الاحترافية", layout="wide", initial_sidebar_state="collapsed")
 
-# --- تنسيق CSS متقدم لشاشة احترافية ---
+# --- تنسيق CSS لجعل الواجهة احترافية وتناسب جهاز Xiaomi Pad 7 ---
 st.markdown("""
     <style>
-    .main { background-color: #0e1117; }
+    .main { background-color: #0d1117; color: #adbac7; }
     div.stButton > button {
         width: 100%;
-        border-radius: 15px;
-        height: 3em;
-        background-color: #1f6aa5;
+        border-radius: 12px;
+        height: 3.5em;
+        background-color: #238636;
         color: white;
+        font-weight: bold;
         border: none;
         transition: 0.3s;
     }
-    div.stButton > button:hover { background-color: #2b8ed8; border: 1px solid white; }
+    div.stButton > button:hover { background-color: #2ea043; border: 1px solid #ffffff; }
     .card {
-        padding: 20px;
+        padding: 25px;
         border-radius: 15px;
-        background-color: #161b22;
-        border: 1px solid #30363d;
+        background-color: #1c2128;
+        border: 1px solid #444c56;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        min-height: 200px;
     }
-    footer { visibility: hidden; }
-    .rights { position: fixed; bottom: 10px; left: 10px; color: #58a6ff; font-weight: bold; }
+    .footer-text { position: fixed; bottom: 10px; left: 15px; color: #539bf5; font-size: 14px; font-weight: bold; }
     </style>
     """, unsafe_allow_html=True)
 
-# إدارة الحالة (Navigation)
-if 'page' not in st.session_state:
-    st.session_state.page = 'home'
+# إدارة التنقل بين الصفحات
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = 'home'
 
-def go_to(page_name):
-    st.session_state.page = page_name
+def navigate_to(page):
+    st.session_state.current_page = page
 
-# حقوق المستخدم
-st.markdown('<div class="rights">تم التطوير بواسطة عبد الله © 2026</div>', unsafe_allow_html=True)
+# حقوق الملكية ثابتة في كل الصفحات
+st.markdown(f'<div class="footer-text">حقوق التطوير محفوظة لـ عبد الله © 2026</div>', unsafe_allow_html=True)
 
 # --- 1. الشاشة الرئيسية ---
-if st.session_state.page == 'home':
-    st.markdown("<h1 style='text-align: center; color: white;'>🚀 مرحباً بك في منصتك الاحترافية يا عبد الله</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #8b949e;'>أدر أهدافك الرياضية والدراسية وعاداتك بكفاءة عالية</p>", unsafe_allow_html=True)
+if st.session_state.current_page == 'home':
+    st.markdown("<h1 style='text-align: center; color: #adbac7;'>🚀 منصة الإنجاز المتكاملة</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #768390;'>مرحباً يا عبد الله، اختر وجهتك اليوم للبدء في التحدي</p>", unsafe_allow_html=True)
     
     st.write("---")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown('<div class="card"><h3>🏋️ تحدي الرياضة</h3><p>احسب سعراتك وخطط لنشاطك البدني</p></div>', unsafe_allow_html=True)
-        if st.button("دخول قسم الرياضة"):
-            go_to('fitness')
+        st.markdown('<div class="card"><h2>🏋️ تحدي الرياضة</h2><p>حساب السعرات الدقيقة وتخطيط النشاط البدني اليومي</p></div>', unsafe_allow_html=True)
+        if st.button("دخول تحدي الرياضة"):
+            navigate_to('fitness')
             st.rerun()
 
     with col2:
-        st.markdown('<div class="card"><h3>📚 تحدي الدراسة</h3><p>خطة دراسية مخصصة لتخصصك الأكاديمي</p></div>', unsafe_allow_html=True)
-        if st.button("دخول قسم الدراسة"):
-            go_to('study')
+        st.markdown('<div class="card"><h2>📚 تحدي الدراسة</h2><p>خطة أكاديمية مخصصة لمهندسي الشبكات والأمن السيبراني</p></div>', unsafe_allow_html=True)
+        if st.button("دخول تحدي الدراسة"):
+            navigate_to('study')
             st.rerun()
 
     with col3:
-        st.markdown('<div class="card"><h3>🚫 ترك العادات</h3><p>تتبع تقدمك في التخلص من العادات السلبية</p></div>', unsafe_allow_html=True)
-        if st.button("دخول قسم العادات"):
-            go_to('habits')
+        st.markdown('<div class="card"><h2>🚫 ترك العادات</h2><p>نظام ذكي لتتبع التخلص من السلوكيات السلبية</p></div>', unsafe_allow_html=True)
+        if st.button("دخول تحدي العادات"):
+            navigate_to('habits')
             st.rerun()
 
 # --- 2. صفحة تحدي الرياضة ---
-elif st.session_state.page == 'fitness':
-    st.title("🏋️ قسم الرياضة والرشاقة")
-    if st.button("⬅️ العودة للرئيسية"): go_to('home'); st.rerun()
+elif st.session_state.current_page == 'fitness':
+    st.title("🏋️ تحدي الرشاقة والنشاط البدني")
+    if st.button("⬅️ العودة للرئيسية"): navigate_to('home'); st.rerun()
     
-    col1, col2 = st.columns(2)
-    with col1:
-        weight = st.number_input("الوزن الحالي (كجم):", min_value=30.0, value=75.0)
-        height = st.number_input("الطول (سم):", min_value=100.0, value=175.0)
-        age = st.number_input("العمر:", min_value=10, max_value=100, value=20)
+    with st.container():
+        st.subheader("📊 حاسبة السعرات الاحترافية")
+        c1, c2 = st.columns(2)
+        with c1:
+            weight = st.number_input("الوزن (كجم):", min_value=30.0, value=75.0)
+            height = st.number_input("الطول (سم):", min_value=100.0, value=175.0)
+        with c2:
+            age = st.number_input("العمر:", min_value=10, max_value=90, value=22)
+            activity = st.selectbox("مستوى النشاط الأسبوعي:", 
+                                  ["خامل جداً (لا رياضة)", "نشاط خفيف (مرة/أسبوع)", "نشاط متوسط (3 مرات/أسبوع)", "نشاط عالي (5 مرات/أسبوع)", "رياضي محترف"])
     
-    with col2:
-        gender = st.radio("الجنس:", ["ذكر", "أنثى"], index=0) # افتراضي ذكر بناءً على طلبك
-        activity = st.radio("مستوى النشاط الأسبوعي:", 
-                           ["خامل (بدون تمارين)", 
-                            "نشاط خفيف (1-2 يوم)", 
-                            "نشاط متوسط (3-4 أيام)", 
-                            "نشاط مرتفع (5-7 أيام)", 
-                            "رياضي محترف (تمارين شاقة)"])
-
-    if st.button("🔥 احسب احتياجي اليومي"):
-        # معادلة Mifflin-St Jeor
-        s = 5 if gender == "ذكر" else -161
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) + s
+    if st.button("🔥 استخراج النتائج"):
+        # معادلة Mifflin-St Jeor للرجال (عبد الله)
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
+        acts = {"خامل جداً (لا رياضة)": 1.2, "نشاط خفيف (مرة/أسبوع)": 1.375, "نشاط متوسط (3 مرات/أسبوع)": 1.55, "نشاط عالي (5 مرات/أسبوع)": 1.725, "رياضي محترف": 1.9}
+        tdee = bmr * acts[activity]
         
-        acts = {"خامل (بدون تمارين)": 1.2, "نشاط خفيف (1-2 يوم)": 1.375, 
-                "نشاط متوسط (3-4 أيام)": 1.55, "نشاط مرتفع (5-7 أيام)": 1.725, "رياضي محترف (تمارين شاقة)": 1.9}
-        
-        total_calories = bmr * acts[activity]
-        st.success(f"يا عبد الله، احتياج جسمك للبقاء على نفس الوزن هو: {int(total_calories)} سعرة حرارية.")
-        st.info(f"لخسارة الوزن (نقص 0.5 كجم أسبوعياً): {int(total_calories - 500)} سعرة.")
+        st.success(f"يا عبد الله، احتياج جسمك اليومي هو {int(tdee)} سعرة حرارية.")
+        st.info(f"للتنشيف (خسارة وزن): {int(tdee - 500)} سعرة | للتضخيم (زيادة عضل): {int(tdee + 400)} سعرة.")
 
 # --- 3. صفحة تحدي ترك العادات ---
-elif st.session_state.page == 'habits':
-    st.title("🚫 تحدي ترك العادات السلبية")
-    if st.button("⬅️ العودة للرئيسية"): go_to('home'); st.rerun()
+elif st.session_state.current_page == 'habits':
+    st.title("🚫 تحدي ترك العادات")
+    if st.button("⬅️ العودة للرئيسية"): navigate_to('home'); st.rerun()
     
-    habit = st.text_input("اسم العادة التي تريد تركها:")
-    col1, col2 = st.columns(2)
-    with col1:
-        times = st.radio("كم مرة تمارسها في اليوم حالياً؟", ["1-3 مرات", "4-7 مرات", "أكثر من ذلك"])
-    with col2:
-        period = st.radio("منذ متى وأنت تمارس هذه العادة؟", ["أقل من سنة", "1-3 سنوات", "أكثر من 3 سنوات"])
+    habit_title = st.text_input("ما هي العادة التي قررت تركها؟")
+    c1, c2 = st.columns(2)
+    with c1:
+        daily_freq = st.radio("كم مرة تكرر العادة يومياً؟", ["مرة واحدة", "2-4 مرات", "أكثر من 5 مرات"])
+    with c2:
+        years_active = st.radio("منذ كم سنة بدأت هذه العادة؟", ["أقل من سنة", "سنة إلى 3 سنوات", "أكثر من 3 سنوات"])
     
-    if st.button("🚀 ابدأ خطة التغيير"):
+    if st.button("✅ ابدأ التحدي الآن"):
         st.balloons()
-        st.success(f"تم تسجيل التحدي لترك {habit}. تذكر أن أول 21 يوماً هي الأصعب، أنت قدها!")
+        st.warning(f"تم بدء التحدي! تذكر يا عبد الله أن الانضباط هو مفتاح النجاح لترك {habit_title}.")
 
 # --- 4. صفحة تحدي الدراسة ---
-elif st.session_state.page == 'study':
-    st.title("📚 التخطيط الدراسي الذكي")
-    if st.button("⬅️ العودة للرئيسية"): go_to('home'); st.rerun()
+elif st.session_state.current_page == 'study':
+    st.title("📚 التخطيط الدراسي التخصصي")
+    if st.button("⬅️ العودة للرئيسية"): navigate_to('home'); st.rerun()
     
-    major = st.selectbox("اختر تخصصك الحالي:", ["هندسة شبكات وأمن سيبراني", "تقنية معلومات", "ثانوي - مسار تقني", "آخر"])
-    level = st.radio("مستواك الحالي في التخصص:", ["مبتدئ", "متوسط", "متقدم"])
+    # ربط التخصص بدراستك الحالية
+    st.subheader("📍 تحديد المسار الأكاديمي")
+    major = st.selectbox("اختر تخصصك أو سنتك الدراسية:", 
+                        ["هندسة الشبكات", "الأمن السيبراني", "تقنية المعلومات", "أخرى"])
     
-    if major == "هندسة شبكات وأمن سيبراني":
-        st.subheader("🛠️ خطة مقترحة لعبد الله (مهندس الشبكات المستقبلي):")
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown("""
-            **المسار التقني:**
-            - دراسة بروتوكولات IPv4/IPv6 بعمق.
-            - التدرب على إعدادات الراوتر والسويتش (Cisco/Juniper).
-            - فهم أساسيات الـ Firewall والـ VPN.
-            """)
-        with col2:
-            st.markdown("""
-            **الشهادات المقترحة:**
-            - شهادة **CCNA** (أساس قوي).
-            - شهادة **CompTIA Security+**.
-            - البدء في تعلم **Python** لأتمتة الشبكات.
-            """)
+    level = st.radio("مستوى التمكن الحالي:", ["مبتدئ (تأسيس)", "متوسط (تطبيق عملي)", "متقدم (احترافي)"])
     
-    if st.button("توليد الجدول الدراسي"):
-        st.write(f"بناءً على مستواك ({level})، ننصحك بتركيز 60% من وقتك على التطبيق العملي في المختبرات (Labs).")
+    if major in ["هندسة الشبكات", "الأمن السيبراني"]:
+        st.markdown("### 🛠️ خطة دراسية مقترحة لعبد الله:")
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.info("**الجانب العملي:**")
+            st.write("- التدرب على Cisco Packet Tracer (ساعتين يومياً).")
+            st.write("- دراسة الـ Subnetting والـ VLANs.")
+        with col_b:
+            st.success("**الشهادات المهنية:**")
+            st.write("- التحضير لشهادة CCNA.")
+            st.write("- البدء في أساسيات Linux و Bash Scripting.")
+
+    if st.button("📋 عرض الخطة الكاملة"):
+        st.write(f"بناءً على اختيارك ({major} - مستوى {level})، تم تحديث جدولك الدراسي ليركز على الجوانب التقنية الأكثر أهمية.")
