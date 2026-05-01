@@ -3,15 +3,24 @@ import streamlit as st
 # 1. إعدادات الصفحة
 st.set_page_config(page_title="تطبيق التحديات - عبدالله الأحمري", layout="centered")
 
-# تنسيق الواجهة ودعم العربية مع إضافة ستايل للحقوق في الأسفل
+# تنسيق الواجهة وإخفاء شريط الإدارة (Manage app) والقوائم العلوية
 st.markdown("""
     <style>
+    /* إخفاء القائمة العلوية وشريط الإدارة السفلي */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    stDeployButton {display:none;}
+    
+    /* إخفاء شريط Manage app الخاص بـ Streamlit Cloud */
+    [data-testid="stStatusWidget"] {display: none;}
+    
     .main { text-align: right; direction: rtl; }
     div[data-testid="stBlock"] { direction: rtl; }
     button { border-radius: 12px; height: 3em; font-weight: bold; }
     
-    /* ستايل الحقوق */
-    .footer {
+    /* ستايل الحقوق الخاص بك في الأسفل */
+    .custom-footer {
         position: fixed;
         left: 0;
         bottom: 0;
@@ -28,11 +37,11 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. وظيفة عرض الحقوق (تظهر في كل الصفحات)
+# 2. وظيفة عرض الحقوق
 def show_copyright():
     st.markdown(f"""
-        <div class="footer">
-            جميع الحقوق محفوظة © 2026 | تطوير: عبدالله الأحمري 👨‍💻
+        <div class="custom-footer">
+            جميع الحقوق محفوظة © 2026 | تطوير المهندس: عبدالله الأحمري 👨‍💻
         </div>
         """, unsafe_allow_html=True)
 
@@ -112,7 +121,6 @@ elif st.session_state.page == 'study':
     category = st.selectbox("اختر مجال دراستك:", [
         "هندسة الحاسب والأمن السيبراني", 
         "تطوير البرمجيات والذكاء الاصطناعي", 
-        "العلوم الإدارية والمالية", 
         "تخصصات أخرى"
     ])
     
@@ -121,9 +129,8 @@ elif st.session_state.page == 'study':
 
     if st.button("توليد خطة الدراسة"):
         st.write(f"### 📋 خطة الـ {hours} ساعات لتخصص {sub}:")
-        st.success(f"• ركز أول {hours*0.6:.1f} ساعة على المهام الصعبة والعملية.")
-        st.info(f"• خصص الوقت المتبقي للمراجعة والتلخيص.")
+        st.success(f"• بالتوفيق يا مهندس {sub}!")
         st.balloons()
 
-# عرض الحقوق في أسفل كل صفحة
+# عرض الحقوق في أسفل كل صفحة بشكل نظيف
 show_copyright()
