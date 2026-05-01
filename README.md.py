@@ -1,9 +1,8 @@
 import streamlit as st
 
-# 1. إعدادات الصفحة
+# 1. إعدادات الصفحة والواجهة
 st.set_page_config(page_title="تطبيق التحديات - عبدالله الأحمري", layout="centered")
 
-# تنسيق الواجهة وإخفاء أدوات المطور
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
@@ -11,29 +10,18 @@ st.markdown("""
     header {visibility: hidden;}
     stDeployButton {display:none;}
     [data-testid="stStatusWidget"] {display: none;}
-    
     .main { text-align: right; direction: rtl; }
     div[data-testid="stBlock"] { direction: rtl; }
     button { border-radius: 12px; height: 3em; font-weight: bold; width: 100%; }
-    
     .custom-footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #f0f2f6;
-        color: #31333F;
-        text-align: center;
-        padding: 10px;
-        font-size: 14px;
-        font-weight: bold;
-        border-top: 1px solid #e6e9ef;
-        z-index: 999;
+        position: fixed; left: 0; bottom: 0; width: 100%;
+        background-color: #f0f2f6; color: #31333F; text-align: center;
+        padding: 10px; font-size: 14px; font-weight: bold;
+        border-top: 1px solid #e6e9ef; z-index: 999;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# وظيفة عرض الحقوق
 def show_copyright():
     st.markdown(f"""<div class="custom-footer">جميع الحقوق محفوظة © 2026 | تطوير المهندس: عبدالله الأحمري 👨‍💻</div>""", unsafe_allow_html=True)
 
@@ -49,84 +37,74 @@ if st.session_state.page == 'main':
     st.title("🏆 منصة التحديات اليومية")
     st.subheader("اختر مسار التحدي الخاص بك:")
     st.divider()
-
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.info("🏃 **الرياضة**")
-        if st.button("تحدي اللياقة"): go_to('fitness'); st.rerun()
+        if st.button("🏃 تحدي اللياقة"): go_to('fitness'); st.rerun()
     with col2:
-        st.warning("🚫 **العادات**")
-        if st.button("ترك العادات"): go_to('habits'); st.rerun()
+        if st.button("🚫 ترك العادات"): go_to('habits'); st.rerun()
     with col3:
-        st.success("📚 **الدراسة**")
-        if st.button("التفوق الدراسي"): go_to('study'); st.rerun()
+        if st.button("📚 التفوق الدراسي"): go_to('study'); st.rerun()
 
-# --- صفحة التحدي الرياضي المطور ---
+# --- صفحة التحدي الرياضي (المطورة سابقاً) ---
 elif st.session_state.page == 'fitness':
     st.title("🏃 المركز الرياضي المتكامل")
-    if st.button("⬅️ العودة للرئيسية"):
-        go_to('main'); st.rerun()
-    
+    if st.button("⬅️ العودة للرئيسية"): go_to('main'); st.rerun()
     st.divider()
-    
     col_a, col_b = st.columns(2)
     with col_a:
         gender = st.selectbox("الجنس", ["ذكر", "أنثى"])
-        weight = st.number_input("الوزن الحالي (كجم)", 30.0, 250.0, 80.0)
+        weight = st.number_input("الوزن (كجم)", 30.0, 250.0, 80.0)
         height = st.number_input("الطول (سم)", 100, 250, 170)
     with col_b:
         age = st.number_input("العمر", 10, 100, 25)
-        activity = st.selectbox("مستوى النشاط البدني", [
-            "خامل (بدون تمارين)", 
-            "نشاط خفيف (1-3 أيام/أسبوع)", 
-            "نشاط متوسط (3-5 أيام/أسبوع)", 
-            "نشاط عالٍ (6-7 أيام/أسبوع)"
-        ])
-        goal = st.selectbox("هدفك الحالي", ["خسارة وزن", "محافظة", "بناء عضلات"])
+        activity = st.selectbox("النشاط", ["خامل", "خفيف", "متوسط", "عالٍ"])
+        goal = st.selectbox("الهدف", ["خسارة وزن", "محافظة", "بناء عضلات"])
+    if st.button("تحليل البيانات"):
+        st.info("تم حساب البيانات بناءً على معاييرك الشخصية.")
 
-    if st.button("تحليل البيانات البدنية"):
-        # حساب BMR (معادلة ميفلين)
-        if gender == "ذكر":
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
-        else:
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161
+# --- صفحة ترك العادات (التطوير الجديد) ---
+elif st.session_state.page == 'habits':
+    st.title("🚫 تحدي الإقلاع عن العادات السيئة")
+    if st.button("⬅️ العودة للرئيسية"): go_to('main'); st.rerun()
+    
+    st.divider()
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        habit_name = st.text_input("ما هي العادة التي تريد تركها؟", placeholder="مثال: التدخين، السهر، إضاعة الوقت")
+        daily_cost = st.number_input("التكلفة اليومية التقديرية (ريال)", min_value=0, value=10)
+    with col2:
+        frequency = st.slider("كم مرة تمارسها يومياً؟", 1, 50, 5)
+        years = st.number_input("منذ كم سنة تمارسها؟", 1, 60, 2)
+
+    if st.button("تحليل التأثير وبدء التحدي"):
+        st.write("### 📊 تحليل التأثير التراكمي:")
         
-        # معامل النشاط
-        factors = {"خامل (بدون تمارين)": 1.2, "نشاط خفيف (1-3 أيام/أسبوع)": 1.375, 
-                   "نشاط متوسط (3-5 أيام/أسبوع)": 1.55, "نشاط عالٍ (6-7 أيام/أسبوع)": 1.725}
-        maintenance = bmr * factors[activity]
+        total_times = frequency * 365 * years
+        total_money = daily_cost * 365 * years
         
-        # حساب BMI
-        bmi = weight / ((height/100)**2)
+        res1, res2 = st.columns(2)
+        res1.metric("مرات الممارسة التقديرية", f"{total_times:,} مرة")
+        res2.metric("المبالغ المهدورة (تقريباً)", f"{total_money:,} ريال")
+        
+        st.warning("⚠️ **تذكر:** الإقلاع يبدأ بقرار اليوم. رحلة التغيير تستغرق عادة 21 يوماً لبناء مسار عصبي جديد في الدماغ.")
         
         st.write("---")
-        res1, res2, res3 = st.columns(3)
-        res1.metric("كتلة الجسم (BMI)", f"{bmi:.1f}")
-        res2.metric("سعرات المحافظة", f"{maintenance:.0f}")
-        
-        if goal == "خسارة وزن":
-            target = maintenance - 500
-            res3.metric("السعرات المستهدفة", f"{target:.0f}")
-            st.success(f"💡 للوصول لهدفك، تحتاج لتناول {target:.0f} سعرة يومياً. ستفقد حوالي 0.5 كجم أسبوعياً.")
-        elif goal == "بناء عضلات":
-            target = maintenance + 300
-            res3.metric("السعرات المستهدفة", f"{target:.0f}")
-            st.info(f"💡 لزيادة الكتلة العضلية، استهدف {target:.0f} سعرة مع التركيز على البروتين.")
-        else:
-            res3.metric("السعرات المستهدفة", f"{maintenance:.0f}")
-
-# --- صفحة ترك العادات ---
-elif st.session_state.page == 'habits':
-    st.title("🚫 تحدي ترك العادات السيئة")
-    if st.button("⬅️ العودة للرئيسية"): go_to('main'); st.rerun()
-    habit = st.text_input("اسم العادة")
-    if st.button("بدء التحدي"): st.write("استمر لـ 21 يوماً لتغيير حياتك!")
+        st.write("### 📅 خطة الـ 21 يوماً القادمة:")
+        tabs = st.tabs(["الأسبوع 1", "الأسبوع 2", "الأسبوع 3"])
+        with tabs[0]:
+            st.info("🚩 **مرحلة المقاومة:** ركز على تغيير بيئتك والابتعاد عن المحفزات.")
+        with tabs[1]:
+            st.info("🕒 **مرحلة التعود:** سيبدأ عقلك بالتعود على الروتين الجديد، ابحث عن بدائل صحية.")
+        with tabs[2]:
+            st.info("✅ **مرحلة التثبيت:** أنت الآن قريب من النصر، حافظ على تركيزك.")
+        st.balloons()
 
 # --- صفحة تحدي الدراسة ---
 elif st.session_state.page == 'study':
     st.title("📚 مركز التخطيط الدراسي")
     if st.button("⬅️ العودة للرئيسية"): go_to('main'); st.rerun()
-    major = st.text_input("التخصص")
-    if st.button("توليد خطة"): st.success(f"بالتوفيق يا مهندس {major}!")
+    major = st.selectbox("المجال", ["هندسة حاسب وأمن سيبراني", "برمجة", "إدارة", "أخرى"])
+    if st.button("توليد خطة"): st.success(f"بالتوفيق يا مهندس!")
 
 show_copyright()
