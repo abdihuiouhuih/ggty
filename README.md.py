@@ -1,7 +1,7 @@
 import streamlit as st
 
-# 1. إعدادات الهوية البصرية والتنسيق (CSS)
-st.set_page_config(page_title="منصة عبدالله للأداء العالي", layout="wide")
+# 1. إعدادات الهوية البصرية والتنسيق الاحترافي (CSS)
+st.set_page_config(page_title="منصة عبد الله للتحديات", layout="wide")
 
 st.markdown("""
     <style>
@@ -15,11 +15,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
     html, body, [class*="css"] { font-family: 'Cairo', sans-serif; text-align: right; direction: rtl; }
     
-    /* إصلاح اتجاه العناصر وحل مشكلة الـ Slider */
-    div[data-testid="stSlider"] { direction: ltr; } /* الـ Slider يعمل أفضل في التنسيق اليساري لتجنب عكس الأرقام */
-    div[data-testid="stMarkdownContainer"] { text-align: right; }
-    
-    /* ستايل البطاقات الاحترافية */
+    /* ستايل البطاقات الاحترافية في الشاشة الرئيسية */
     .feature-card {
         background-color: #1e2130;
         padding: 40px;
@@ -35,7 +31,7 @@ st.markdown("""
         border-color: #4CAF50;
     }
 
-    /* الفوتر (حقوق عبدالله) */
+    /* الفوتر المحدث (حقوق عبد الله) */
     .custom-footer {
         position: fixed; left: 0; bottom: 0; width: 100%;
         background-color: #0e1117; color: #4CAF50; text-align: center;
@@ -52,9 +48,10 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 def show_footer():
-    st.markdown('<div class="custom-footer">جميع الحقوق محفوظة © 2026 | تطوير المهندس: عبدالله الأحمري 👨‍💻</div>', unsafe_allow_html=True)
+    # تعديل الحقوق بناءً على طلبك (حذف 2026 والمهندس)
+    st.markdown('<div class="custom-footer">جميع الحقوق محفوظة © | تطوير: عبد الله الأحمري 👨‍💻</div>', unsafe_allow_html=True)
 
-# إدارة التنقل
+# إدارة التنقل بين الصفحات
 if 'page' not in st.session_state:
     st.session_state.page = 'main'
 
@@ -63,96 +60,101 @@ def nav_to(page):
 
 # --- الشاشة الرئيسية ---
 if st.session_state.page == 'main':
-    st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🏆 منصة عبدالله للإنجاز اليومي</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 1.2em;'>اختر تخصصك لليوم وابدأ التحدي</p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🏆 منصة الإنجاز اليومي</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 1.2em;'>صمم طريقك للنجاح مع أدواتنا المتكاملة</p>", unsafe_allow_html=True)
     st.write("---")
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown('<div class="feature-card"><h2>🔥</h2><h3>تحدي اللياقة</h3><p>حساب السعرات والماكروز بناءً على نشاطك</p></div>', unsafe_allow_html=True)
-        if st.button("دخول المختبر الرياضي"): nav_to('fit'); st.rerun()
+        st.markdown('<div class="feature-card"><h2>🔥</h2><h3>تحدي اللياقة</h3><p>حساب السعرات والاحتياج اليومي لجسمك</p></div>', unsafe_allow_html=True)
+        if st.button("دخول القسم الرياضي"): nav_to('fit'); st.rerun()
     with col2:
-        st.markdown('<div class="feature-card"><h2>🚫</h2><h3>تحدي العادات</h3><p>تحليل عميق للأثر المالي والزمني للعادات</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="feature-card"><h2>🚫</h2><h3>تحدي العادات</h3><p>تحليل الأثر الزمني والمالي لترك العادات</p></div>', unsafe_allow_html=True)
         if st.button("بدء رحلة الإقلاع"): nav_to('habit'); st.rerun()
     with col3:
-        st.markdown('<div class="feature-card"><h2>📖</h2><h3>تحدي الدراسة</h3><p>خطط دراسية مخصصة لطلاب الهندسة والتقنية</p></div>', unsafe_allow_html=True)
-        if st.button("تخطيط جدولك"): nav_to('study'); st.rerun()
+        st.markdown('<div class="feature-card"><h2>📖</h2><h3>تحدي الدراسة</h3><p>خطط دراسية مخصصة حسب تخصصك الجامعي</p></div>', unsafe_allow_html=True)
+        if st.button("تخطيط دراستك"): nav_to('study'); st.rerun()
 
-# --- صفحة الرياضة ---
+# --- صفحة الرياضة (حساب السعرات والنشاط) ---
 elif st.session_state.page == 'fit':
     st.title("🏋️ المختبر الرياضي الذكي")
-    if st.button("⬅️ العودة للرئيسية"): nav_to('main'); st.rerun()
+    if st.button("🏠 العودة للرئيسية"): nav_to('main'); st.rerun()
     st.divider()
 
     c1, c2 = st.columns(2)
     with c1:
-        st.subheader("📋 البيانات الأساسية")
+        st.subheader("📋 البيانات الشخصية")
         weight = st.number_input("الوزن (كجم)", 40, 200, 80)
         height = st.number_input("الطول (سم)", 120, 230, 175)
         age = st.number_input("العمر", 15, 90, 25)
         gender = st.radio("الجنس", ["ذكر", "أنثى"], horizontal=True)
     with c2:
-        st.subheader("⚡ مستوى النشاط")
-        activity = st.selectbox("اختر مستواك الحقيقي:", [
-            "خامل (لا تمارين)", 
-            "خفيف (تمارين 1-3 أيام)", 
-            "متوسط (تمارين 3-5 أيام)", 
-            "نشط جداً (تمارين يومية مكثفة)"
-        ])
-        goal = st.selectbox("هدفك الحالي:", ["تنشيف", "محافظة", "تضخيم"])
+        st.subheader("⚡ مستوى النشاط والهدف")
+        activity = st.select_slider("مستوى النشاط الأسبوعي:", 
+                                    options=["خامل", "خفيف", "متوسط", "نشط جداً"])
+        goal = st.selectbox("ما هو هدفك الحالي؟", ["خسارة وزن", "محافظة", "بناء عضلات"])
 
-    if st.button("تحليل البيانات"):
+    if st.button("تحليل الاحتياج اليومي"):
+        # حساب السعرات الأساسية (Mifflin-St Jeor)
         bmr = (10 * weight) + (6.25 * height) - (5 * age) + (5 if gender == "ذكر" else -161)
-        factor = {"خامل (لا تمارين)": 1.2, "خفيف (تمارين 1-3 أيام)": 1.375, "متوسط (تمارين 3-5 أيام)": 1.55, "نشط جداً (تمارين يومية مكثفة)": 1.725}[activity]
+        factor = {"خامل": 1.2, "خفيف": 1.375, "متوسط": 1.55, "نشط جداً": 1.725}[activity]
         maint = bmr * factor
         
         st.write("---")
         res1, res2 = st.columns(2)
         res1.metric("سعرات المحافظة", f"{int(maint)} سعرة")
-        if goal == "تنشيف": target = maint - 500
-        elif goal == "تضخيم": target = maint + 300
+        if goal == "خسارة وزن": target = maint - 500
+        elif goal == "بناء عضلات": target = maint + 300
         else: target = maint
-        res2.metric("السعرات المستهدفة", f"{int(target)} سعرة")
-        st.success(f"يا عبدالله، بناءً على طولك ({height}سم) ونشاطك، هذا هو وقود جسمك المثالي.")
+        res2.metric("السعرات المستهدفة للهدف", f"{int(target)} سعرة")
+        st.success(f"يا عبد الله، للوصول لهدفك ({goal}) تحتاج لتناول {int(target)} سعرة يومياً.")
 
-# --- صفحة العادات ---
+# --- صفحة العادات (تحليل الأثر التراكمي) ---
 elif st.session_state.page == 'habit':
     st.title("🚫 رادار ترك العادات")
-    if st.button("⬅️ العودة للرئيسية"): nav_to('main'); st.rerun()
+    if st.button("🏠 العودة للرئيسية"): nav_to('main'); st.rerun()
     st.divider()
 
     col_h1, col_h2 = st.columns(2)
     with col_h1:
-        h_name = st.text_input("اسم العادة:")
-        h_freq = st.slider("كم مرة تمارسها يومياً؟", 1, 50, 5) # تم تعديل الـ Slider ليعمل بشكل سليم
+        habit_name = st.text_input("ما هي العادة التي تريد تركها؟")
+        h_freq = st.number_input("كم مرة تمارسها يومياً؟", 1, 100, 5)
     with col_h2:
-        h_years = st.number_input("منذ كم سنة تمارسها؟", 1, 60, 2)
-        h_cost = st.number_input("تكلفة المرة الواحدة (ريال)", 0, 100, 10)
+        h_years = st.number_input("منذ كم سنة وأنت ممارس لها؟", 1, 60, 2)
+        h_cost = st.number_input("تكلفة الممارسة الواحدة (ريال تقريباً)", 0, 500, 10)
 
     if st.button("تحليل الأثر التراكمي"):
         total_times = h_freq * 365 * h_years
         total_money = total_times * h_cost
-        st.error(f"تحذير: لقد مارست {h_name} حوالي {total_times:,} مرة، وكلفتك قرابة {total_money:,} ريال!")
-        st.info("💡 قرارك اليوم بتركها سيوفر لك ثروة صحية ومالية في المستقبل.")
+        st.write("### 📊 التقرير التحليلي:")
+        r1, r2 = st.columns(2)
+        r1.metric("عدد المرات الإجمالي", f"{total_times:,}")
+        r2.metric("إجمالي الأموال المهدورة", f"{total_money:,} ريال")
+        st.error(f"بإقلاعك عن {habit_name} اليوم، ستوفر ثروة صحية ومالية تقدر بـ {total_money:,} ريال مستقبلاً!")
         st.balloons()
 
-# --- صفحة الدراسة ---
+# --- صفحة الدراسة (خطط دراسية متخصصة) ---
 elif st.session_state.page == 'study':
     st.title("📚 التخطيط الأكاديمي")
-    if st.button("⬅️ العودة للرئيسية"): nav_to('main'); st.rerun()
+    if st.button("🏠 العودة للرئيسية"): nav_to('main'); st.rerun()
     st.divider()
 
-    st.subheader("أدخل بياناتك الدراسية")
-    level = st.selectbox("المستوى الدراسي:", ["ثانوي", "جامعي - تخصص هندسة شبكات", "جامعي - تخصص أمن سيبراني", "جامعي - تخصص تقني آخر"])
-    study_hours = st.slider("ساعات المذاكرة المتاحة يومياً:", 1, 12, 4)
+    major = st.selectbox("اختر تخصصك الجامعي:", [
+        "هندسة الشبكات والأمن السيبراني", 
+        "هندسة الحاسب", 
+        "علوم الحاسب والبرمجيات",
+        "تخصص تقني آخر"
+    ])
+    study_hours = st.select_slider("ساعات المذاكرة المتاحة يومياً:", options=range(1, 13), value=4)
 
-    if st.button("توليد خطة الدراسة"):
-        st.success(f"خطة مقترحة يا مهندس عبدالله لمستوى {level}:")
-        if "جامعي" in level:
-            st.info(f"- تخصيص {study_hours * 0.6:.1f} ساعة للجانب العملي والـ Labs.")
-            st.info(f"- تخصيص {study_hours * 0.4:.1f} ساعة للمذاكرة النظرية والتحضير للشهادات المهنية.")
+    if st.button("توليد الخطة الدراسية"):
+        st.success(f"خطة مقترحة يا عبد الله لتخصص {major}:")
+        if "شبكات" in major or "الأمن" in major:
+            st.info(f"📍 تخصيص {study_hours * 0.6:.1f} ساعة للتدريب العملي على اللابات (Labs).")
+            st.info(f"📍 تخصيص {study_hours * 0.4:.1f} ساعة لمذاكرة الجانب النظري والشهادات المهنية.")
         else:
-            st.info(f"- تخصيص {study_hours * 0.7:.1f} ساعة للمواد العلمية الأساسية.")
-            st.info(f"- تخصيص {study_hours * 0.3:.1f} ساعة للمراجعة وحل التدريبات.")
+            st.info(f"📍 تخصيص 70% من وقتك للتطبيق البرمجي الفعلي.")
+            st.info(f"📍 تخصيص 30% لمراجعة الأساسيات النظرية.")
+        st.snow()
 
 show_footer()
