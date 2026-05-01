@@ -1,58 +1,96 @@
 import streamlit as st
-import pandas as pd
 
-# إعدادات الصفحة
-st.set_page_config(page_title="تطبيق التحديات اليومية", page_icon="🏆")
+# --- إعدادات الصفحة الأساسية ---
+st.set_page_config(page_title="تطبيق التحديات الذكي", layout="centered")
 
-# تنسيق الواجهة لتناسب اللغة العربية
+# تنسيق الواجهة ليدعم العربية
 st.markdown("""
     <style>
     .main { text-align: right; direction: rtl; }
     div[data-testid="stBlock"] { direction: rtl; }
+    button { width: 100%; border-radius: 10px; hieght: 50px; }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("🏆 مدربك الشخصي للتحديات")
-st.write("تابع تقدمك اليومي وحقق أهدافك!")
+# --- إدارة التنقل (Navigation) ---
+if 'page' not in st.session_state:
+    st.session_state.page = 'main'
 
-# استخدام الـ Session State لحفظ البيانات مؤقتاً أثناء تشغيل البرنامج
-if 'challenges' not in st.session_state:
-    st.session_state.challenges = [
-        {"id": 1, "name": "🏃 تحدي الرياضة", "days": 30, "current": 0},
-        {"id": 2, "name": "📵 ترك العادات السيئة", "days": 21, "current": 0},
-        {"id": 3, "name": "📚 تحدي الدراسة", "days": 15, "current": 0}
-    ]
+def change_page(page_name):
+    st.session_state.page = page_name
 
-# عرض التحديات
-for idx, ch in enumerate(st.session_state.challenges):
-    with st.container():
-        col1, col2 = st.columns([3, 1])
-        
-        with col1:
-            st.subheader(ch['name'])
-            # حساب النسبة المئوية للتقدم
-            progress_val = ch['current'] / ch['days']
-            st.progress(progress_val)
-            st.write(f"التقدم: {ch['current']} من {ch['days']} يوم")
-            
-        with col2:
-            st.write(" ") # موازنة المسافة
-            if st.button(f"تم الإنجاز ✅", key=f"btn_{idx}"):
-                if ch['current'] < ch['days']:
-                    st.session_state.challenges[idx]['current'] += 1
-                    st.rerun()
-                else:
-                    st.balloons()
-                    st.success("أنهيت التحدي! بطل!")
+# --- الصفحة الرئيسية ---
+if st.session_state.page == 'main':
+    st.title("🏆 منصة التحديات اليومية")
+    st.subheader("اختر التحدي الذي تريد البدء به:")
+    st.write("---")
 
-        st.divider()
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.info("🏃 **الرياضة**")
+        if st.button("دخول التحدي الرياضي"):
+            change_page('fitness')
+            st.rerun()
 
-# إضافة تحدي جديد
-with st.sidebar:
-    st.header("إضافة تحدي جديد")
-    new_name = st.text_input("اسم التحدي")
-    new_days = st.number_input("عدد الأيام", min_value=1, value=30)
-    if st.button("إضافة ➕"):
-        new_id = len(st.session_state.challenges) + 1
-        st.session_state.challenges.append({"id": new_id, "name": new_name, "days": new_days, "current": 0})
+    with col2:
+        st.warning("🚫 **العادات**")
+        if st.button("دخول تحدي العادات"):
+            change_page('habits')
+            st.rerun()
+
+    with col3:
+        st.success("📚 **الدراسة**")
+        if st.button("دخول تحدي الدراسة"):
+            change_page('study')
+            st.rerun()
+
+# --- صفحة التحدي الرياضي ---
+elif st.session_state.page == 'fitness':
+    st.title("🏃 تحدي اللياقة البدنية")
+    if st.button("⬅️ العودة للرئيسية"):
+        change_page('main')
         st.rerun()
+    
+    st.divider()
+    w = st.number_input("الوزن (كجم)", 30, 200, 70)
+    h = st.number_input("الطول (سم)", 100, 250, 170)
+    age = st.number_input("العمر", 10, 100, 25)
+    
+    if st.button("احسب احتياجي من السعرات"):
+        # حساب تقريبي (Mifflin-St Jeor)
+        bmr = (10 * w) + (6.25 * h) - (5 * age) + 5
+        st.success(f"سعراتك الأساسية هي: {bmr:.0f} سعرة.")
+        st.info(f"لخسارة الوزن، حاول استهلاك {bmr - 500:.0f} سعرة يومياً.")
+
+# --- صفحة ترك العادات ---
+elif st.session_state.page == 'habits':
+    st.title("🚫 تحدي ترك العادات السيئة")
+    if st.button("⬅️ العودة للرئيسية"):
+        change_page('main')
+        st.rerun()
+    
+    st.divider()
+    habit = st.text_input("ما هي العادة التي تريد الإقلاع عنها؟")
+    times = st.number_input("كم مرة تمارسها يومياً؟", 1, 100, 5)
+    years = st.number_input("كم سنة صار لك تمارسها؟", 1, 50, 2)
+    
+    if st.button("تحليل التأثير"):
+        total = times * 365 * years
+        st.error(f"لقد مارست هذه العادة حوالي {total:,} مرة!")
+        st.write("التحدي الآن هو جعل العداد 'صفر' لمدة 21 يوماً متواصلة.")
+
+# --- صفحة تحدي الدراسة ---
+elif st.session_state.page == 'study':
+    st.title("📚 تحدي التفوق الدراسي")
+    if st.button("⬅️ العودة للرئيسية"):
+        change_page('main')
+        st.rerun()
+    
+    st.divider()
+    major = st.selectbox("المرحلة/التخصص", ["هندسة شبكات", "أمن سيبراني", "برمجة", "أخرى"])
+    hours = st.slider("كم ساعة تبي تدرس في اليوم؟", 1, 12, 4)
+    
+    if st.button("توليد خطة"):
+        st.write(f"### خطة لـ {major}:")
+        st.success(f"1. ابدأ أول ساعتين في أصعب مادة.\n2. خذ بريك 10 دقائق بعد كل ساعة.\n3. ركز على التطبيق العملي (Labs) إذا كنت تدرس {major}.")
