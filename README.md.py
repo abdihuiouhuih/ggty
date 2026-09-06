@@ -1,16 +1,137 @@
+import streamlit as st
+import random
+
+# --- إعدادات الصفحة ---
+st.set_page_config(page_title="منصة الإنجاز الذكي 2026", layout="wide", initial_sidebar_state="collapsed")
+
+# --- تنسيق CSS احترافي ---
+st.markdown("""
+    <style>
+    .main { background-color: #0d1117; color: #adbac7; }
+    div.stButton > button {
+        width: 100%; border-radius: 12px; height: 3.8em;
+        background-color: #238636; color: white; font-weight: bold; border: none; transition: 0.3s;
+    }
+    div.stButton > button:hover { background-color: #2ea043; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(46,160,67,0.4); }
+    .card {
+        padding: 25px; border-radius: 20px; background-color: #1c2128;
+        border: 1px solid #444c56; text-align: center; margin-bottom: 20px;
+        min-height: 240px; transition: 0.3s;
+    }
+    .card:hover { border-color: #539bf5; }
+    .footer-text { position: fixed; bottom: 10px; left: 15px; color: #539bf5; font-size: 14px; font-weight: bold; }
+    .advice-box { padding: 15px; border-right: 5px solid #539bf5; background-color: #22272e; border-radius: 5px; margin: 10px 0; }
+    </style>
+    """, unsafe_allow_html=True)
+
+# إدارة التنقل
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = 'home'
+
+# دالة لتفريغ المحادثة الحالية مع تحديث الرسالة الترحيبية العفوية
+def reset_ai_messages():
+    st.session_state.ai_messages = [
+        {"role": "assistant", "content": "يا هلا والله! أنا مساعدك في «منصة التطوير الذاتي الشاملة». سولف معي براحتك، محتار بتخصص؟ تبي تنزل وزنك؟ ولا تبي تكسر عادة سيئة؟ اعتبرني صديقك وفضفض لي، وش شاغل بالك اليوم؟"}
+    ]
+
+# تخزين محادثات الذكاء الاصطناعي في الذاكرة المؤقتة (Session State)
+if 'ai_messages' not in st.session_state:
+    reset_ai_messages()
+
+def navigate_to(page):
+    st.session_state.current_page = page
+
+st.markdown('<div class="footer-text">حقوق التطوير محفوظة لـ عبد الله © 2026</div>', unsafe_allow_html=True)
+
 # --- 1. الشاشة الرئيسية ---
 if st.session_state.current_page == 'home':
     st.markdown("<h1 style='text-align: center; color: #ffffff;'>🚀 منصة التطوير الذاتي الشاملة</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: #768390;'>نظام ذكي تفاعلي لتحسين جودة حياتك اليومية ومساعدتك في كل استفساراتك</p>", unsafe_allow_html=True)
+    
+    st.write("---")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown('<div class="card"><h2>🏋️ التحدي الرياضي</h2><p>حساب سعرات متطور ونظام نصائح بدنية متغيرة</p></div>', unsafe_allow_html=True)
+        if st.button("دخول التحدي الرياضي", key="btn_fit"): 
+            navigate_to('fitness')
+            st.rerun()
 
-    # --- كود إثبات ملكية Google ---
+        st.markdown('<div class="card"><h2>🚫 تحدي العادات</h2><p>استراتيجيات نفسية وعملية لترك العادات السلبية</p></div>', unsafe_allow_html=True)
+        if st.button("دخول تحدي العادات", key="btn_habits"): 
+            navigate_to('habits')
+            st.rerun()
+
+    with col2:
+        st.markdown('<div class="card"><h2>📚 التحدي الدراسي</h2><p>خطط ذكية ونصائح تخصصية لـ 12 مساراً أكاديمياً</p></div>', unsafe_allow_html=True)
+        if st.button("دخول التحدي الدراسي", key="btn_study"): 
+            navigate_to('study')
+            st.rerun()
+
+        st.markdown('<div class="card"><h2>🤖 منصة التطوير الذاتي الشاملة</h2><p>مساعد ذكي عفوي يرد على كافة استفساراتك ويشرح لك محتويات وأقسام الموقع فوراً</p></div>', unsafe_allow_html=True)
+        if st.button("دخول الذكاء الاصطناعي", key="btn_ai"): 
+            navigate_to('ai_chat')
+            st.rerun()
+
+    # --- إضافة إثبات ملكية Google ---
+    st.markdown("""
+        <div style="
+            margin-top: 30px;
+            padding: 14px 20px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            text-align: right;
+            direction: rtl;
+        ">
+            <span style="color: #539bf5; font-weight: bold;">
+                🔐 إثبات ملكية الموقع
+            </span>
+            <span style="color: #768390; font-size: 13px; margin-right: 10px;">
+                Google Site Verification
+            </span>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # --- كود Google لإثبات ملكية الموقع ---
     st.markdown(
         '<meta name="google-site-verification" content="3jWJEcIATiFLKYhOJwzN4jksYpA9Bvp2qlfsaOkFBpQ" />',
         unsafe_allow_html=True
     )
 
-    st.write("---")
-    col1, col2 = st.columns(2)            "⏱️ **الراحة:** لا تتجاوز 90 ثانية راحة بين الجلسات إذا كان هدفك رفع اللياقة.",
+# --- 2. صفحة التحدي الرياضي ---
+elif st.session_state.current_page == 'fitness':
+    st.title("🏋️ التحدي الرياضي الذكي")
+    if st.button("⬅️ العودة للرئيسية", key="back_fit"): 
+        navigate_to('home')
+        st.rerun()
+    
+    c1, c2 = st.columns([1, 1])
+    with c1:
+        st.subheader("🔢 بيانات الجسم")
+        weight = st.number_input("الوزن (كجم):", 30.0, 250.0, 75.0)
+        height = st.number_input("الطول (سم):", 100.0, 250.0, 175.0)
+        age = st.number_input("العمر:", 10, 90, 22)
+    with c2:
+        st.subheader("⚡ مستوى النشاط")
+        activity = st.radio("نشاطك الأسبوعي:", 
+                            ["خامل جداً", "تمارين خفيفة (1-2 يوم)", "نشاط متوسط (3-4 أيام)", "نشاط مكثف (5-6 أيام)", "محترف/بطل رياضي"])
+        goal = st.selectbox("هدفك الحالي:", ["تنشيف (خسارة دهون)", "تضخيم (بناء عضل)", "لياقة عامة"])
+
+    if st.button("📊 توليد التقرير البدني والنصائح"):
+        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
+        acts = {"خامل جداً": 1.2, "تمارين خفيفة (1-2 يوم)": 1.375, "نشاط متوسط (3-4 أيام)": 1.55, "نشاط مكثف (5-6 أيام)": 1.725, "محترف/بطل رياضي": 1.9}
+        tdee = bmr * acts[activity]
+        
+        st.success(f"سعرات المحافظة: {int(tdee)} سعرة. احتياجك لهدفك: {int(tdee-500 if 'خسارة' in goal else tdee+400 if 'بناء' in goal else tdee)} سعرة.")
+        
+        st.markdown("### 💡 نصائح رياضية متنوعة لك:")
+        fitness_advices = [
+            "✅ **قاعدة الـ 10%:** لا تزد شدة تمارينك أكثر من 10% أسبوعياً لتجنب الإصابات.",
+            "💧 **الترطيب:** اشرب 500 مل من الماء قبل التمرين بـ 30 دقيقة لتحسين الأداء.",
+            "😴 **الاستشفاء:** العضلات تبنى أثناء النوم وليس أثناء التمرين، حافظ على 8 ساعات نوم.",
+            "🍎 **التغذية:** ركز على البروتين (1.6 جم لكل كجم من وزنك) لدعم البناء العضلي.",
+            "⏱️ **الراحة:** لا تتجاوز 90 ثانية راحة بين الجلسات إذا كان هدفك رفع اللياقة.",
             "🧘 **الإطالة:** خصص 10 دقائق بعد التمرين للإطالات لتقليل آلام العضلات."
         ]
         selected_advices = random.sample(fitness_advices, 3)
@@ -103,6 +224,61 @@ elif st.session_state.current_page == 'ai_chat':
     col_btn1, col_btn2 = st.columns([1, 1])
     with col_btn1:
         if st.button("⬅️ العودة للرئيسية", key="back_ai"): 
+            navigate_to('home')
+            st.rerun()
+    with col_btn2:
+        if st.button("🗑️ مسح جميع الرسائل وبدء محادثة جديدة", key="clear_ai"):
+            reset_ai_messages()
+            st.rerun()
+    
+    st.write("---")
+    
+    # عرض سجل المحادثة من الذاكرة المؤقتة فقط (Streamlit Session)
+    for message in st.session_state.ai_messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+            
+    # استقبال إدخال المستخدم
+    if user_query := st.chat_input("فضفض لي أو اسألني عن أي قسم (تخصص، رجيم، عادات)..."):
+        # إضافة رسالة المستخدم للذاكرة المؤقتة فقط
+        st.session_state.ai_messages.append({"role": "user", "content": user_query})
+        with st.chat_message("user"):
+            st.markdown(user_query)
+            
+        # ذكاء اصطناعي تفاعلي وعفوي وذكي جداً
+        query_lower = user_query.lower()
+        
+        # 1. قسم الحيرة بين التخصصات الدراسية
+        if "محتار" in query_lower or "تخصص" in query_lower or "أختار" in query_lower or "دراسي" in query_lower or "مجال" in query_lower:
+            if "طب" in query_lower:
+                ai_reply = "يا هلا! بما إنك تحب الطب، فهذا الاختيار عظايم وإنساني من الدرجة الأولى. في التحدي الدراسي عندنا بالمنصة، بنقترح عليك تركز على الحفظ العميق، استخدام بطاقات Anki، وربط الكتب بالحالات السريرية. ولو تبي مجالات قريبة منه، عندك التتمريض أو العلوم الطبية المساعدة.. ها، شرايك، ناوي تكمل وتدخل قسم الطب عندنا عشان نعطيك الخطة بالتفصيل؟"
+            elif "هندس" in query_lower or "شبكات" in query_lower or "أمن" in query_lower or "حاسب" in query_lower:
+                ai_reply = "ممتاز جداً! اختيارك للمجال التقني والهندسي يعني إنك تحب الحلول العميقة والمنطق. في خانة التحدي الدراسي بالمنصة عندنا 12 مساراً تغطي كل هذه التخصصات (مثل هندسة الشبكات، الأمن السيبراني، الذكاء الاصطناعي، وغيرها). إذا كنت محتار بين تخصصين تقنيين، اسألني عنهما وأنا أقول لك وين تميل كفة الإبداع أكثر بناءً على شغفك!"
+            else:
+                ai_reply = "صراحة الحيرة بين التخصصات أمر طبيعي جداً! عندنا في «منصة التطوير الذاتي الشاملة» 12 مساراً متنوعاً (مثل الطب، الهندسة، الأمن السيبراني، المحاسبة، القانون وغيرها). علمني، وش التخصصين اللي في راسك ومحتار بينهم؟ وعطني نبذة عن هواياتك أو وش تحب، وأنا بضبطك بنصيحة تفتح مخك على الاختيار الصح!"
+
+        # 2. قسم التحدي الرياضي وخسارة الدهون
+        elif "رياضي" in query_lower or "رياضة" in query_lower or "سعرات" in query_lower or "دهون" in query_lower or "وزن" in query_lower or "أكل" in query_lower:
+            if "دهوني" in query_lower or "أكل" in query_lower or "تنزل" in query_lower or "اخسر" in query_lower:
+                ai_reply = "يا أخي اسمعني زين، الدهون الزائدة ما تروح بالسحر ولا بمجرد إنك تقطع الأكل فجأة! السالفة باختصار: دخل سعرات أقل من اللي جسمك يحرقه (عجز سعرات)، وكل أكل نظيف، واشرب موية كويسة. والأهم؟ الاستمرار والعزيمة الصادقة، لا تستعجل النتيجة. روح لـ «التحدي الرياضي» عندنا في الصفحة الرئيسية، حط وزنك وطولك، وبيطلع لك الرقم الدقيق اللي تحتاجه عشان تخسر دهونك بكل صحة وراحة!"
+            else:
+                ai_reply = "«التحدي الرياضي» هذا طال عمرك هو رفيقك عشان تظبط جسمك! فكرته بكل عفوية: تدخل بياناتك (وزنك، طولك، عمرك، ونشاطك اليومي)، وهو يحسب لك كم سعرة تحتاجها عشان تحافظ على جسمك، أو تضخّم، أو تنشف دهونك. ومعها يعطيك نصائح بدنية متغيرة كل ما دخلت. جربه من الرئيسية وادع لي!"
+
+        # 3. قسم العادات
+        elif "عادة" in query_lower or "عادات" in query_lower or "سهر" in query_lower or "التدخين" in query_lower:
+            ai_reply = "يا الله، سالفة العادات هذي مأساة عند الكل! بس في «مختبر تغيير العادات» عندنا، ما نعطيك كلام كتب معقد. الفكرة بكل عفوية: حدد وش العادة اللي مزهقتك، وحدد المحفز حقها (يعني هل تسويها لما تطفش؟ ولا لما تتوتر؟)، وبناءً عليها نعطيك استراتيجيات تكتيكية تكسرها فيها خطوة بخطوة. لا تفكر تتركها فجأة، التدرج هو السر!"
+
+        # 4. التعريف بالمنصة والمطور
+        elif "من أنت" in query_lower or "من هي" in query_lower or "موقع" in query_lower or "عبد الله" in query_lower:
+            ai_reply = "أنا «منصة التطوير الذاتي الشاملة»، نظامك الذكي المفضل اللي طوّره المبدع عبد الله © 2026! مخصص عشان أساعدك تضبط لياقتك، تكسر عاداتك السيئة، وتختار مستقبلك الدراسي والمهني وأنت حاط رجل على رجل بكل راحة وعفوية. كيف أقدر أخدمك اليوم؟"
+
+        # 5. رد افتراضي عام وعفوي
+        else:
+            ai_reply = f"يا هلا فيك! بصراحة استفسارك ({user_query}) جميل ومرتب. عندنا في «منصة التطوير الذاتي الشاملة» عاد ضبطنا كل الأمور: عندك التحدي الرياضي للدهون والسعرات، وتحدي العادات عشان تضبط روتينك، والاتحاد الدراسي اللي فيه 12 مساراً تخصصياً. ودك أساعدك في أي واحد منهم بالتحديد؟"
+            
+        st.session_state.ai_messages.append({"role": "assistant", "content": ai_reply})
+        with st.chat_message("assistant"):
+            st.markdown(ai_reply)        if st.button("⬅️ العودة للرئيسية", key="back_ai"): 
             navigate_to('home')
             st.rerun()
     with col_btn2:
