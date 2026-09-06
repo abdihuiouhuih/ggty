@@ -1,111 +1,16 @@
-import streamlit as st
-import random
-
-# --- إعدادات الصفحة ---
-st.set_page_config(page_title="منصة الإنجاز الذكي 2026", layout="wide", initial_sidebar_state="collapsed")
-
-# --- تنسيق CSS احترافي ---
-st.markdown("""
-    <style>
-    .main { background-color: #0d1117; color: #adbac7; }
-    div.stButton > button {
-        width: 100%; border-radius: 12px; height: 3.8em;
-        background-color: #238636; color: white; font-weight: bold; border: none; transition: 0.3s;
-    }
-    div.stButton > button:hover { background-color: #2ea043; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(46,160,67,0.4); }
-    .card {
-        padding: 25px; border-radius: 20px; background-color: #1c2128;
-        border: 1px solid #444c56; text-align: center; margin-bottom: 20px;
-        min-height: 240px; transition: 0.3s;
-    }
-    .card:hover { border-color: #539bf5; }
-    .footer-text { position: fixed; bottom: 10px; left: 15px; color: #539bf5; font-size: 14px; font-weight: bold; }
-    .advice-box { padding: 15px; border-right: 5px solid #539bf5; background-color: #22272e; border-radius: 5px; margin: 10px 0; }
-    </style>
-    """, unsafe_allow_html=True)
-
-# إدارة التنقل
-if 'current_page' not in st.session_state:
-    st.session_state.current_page = 'home'
-
-# دالة لتفريغ المحادثة الحالية مع تحديث الرسالة الترحيبية العفوية
-def reset_ai_messages():
-    st.session_state.ai_messages = [
-        {"role": "assistant", "content": "يا هلا والله! أنا مساعدك في «منصة التطوير الذاتي الشاملة». سولف معي براحتك، محتار بتخصص؟ تبي تنزل وزنك؟ ولا تبي تكسر عادة سيئة؟ اعتبرني صديقك وفضفض لي، وش شاغل بالك اليوم؟"}
-    ]
-
-# تخزين محادثات الذكاء الاصطناعي في الذاكرة المؤقتة (Session State)
-if 'ai_messages' not in st.session_state:
-    reset_ai_messages()
-
-def navigate_to(page):
-    st.session_state.current_page = page
-
-st.markdown('<div class="footer-text">حقوق التطوير محفوظة لـ عبد الله © 2026</div>', unsafe_allow_html=True)
-
 # --- 1. الشاشة الرئيسية ---
 if st.session_state.current_page == 'home':
     st.markdown("<h1 style='text-align: center; color: #ffffff;'>🚀 منصة التطوير الذاتي الشاملة</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: #768390;'>نظام ذكي تفاعلي لتحسين جودة حياتك اليومية ومساعدتك في كل استفساراتك</p>", unsafe_allow_html=True)
-    
+
+    # --- كود إثبات ملكية Google ---
+    st.markdown(
+        '<meta name="google-site-verification" content="3jWJEcIATiFLKYhOJwzN4jksYpA9Bvp2qlfsaOkFBpQ" />',
+        unsafe_allow_html=True
+    )
+
     st.write("---")
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown('<div class="card"><h2>🏋️ التحدي الرياضي</h2><p>حساب سعرات متطور ونظام نصائح بدنية متغيرة</p></div>', unsafe_allow_html=True)
-        if st.button("دخول التحدي الرياضي", key="btn_fit"): 
-            navigate_to('fitness')
-            st.rerun()
-
-        st.markdown('<div class="card"><h2>🚫 تحدي العادات</h2><p>استراتيجيات نفسية وعملية لترك العادات السلبية</p></div>', unsafe_allow_html=True)
-        if st.button("دخول تحدي العادات", key="btn_habits"): 
-            navigate_to('habits')
-            st.rerun()
-
-    with col2:
-        st.markdown('<div class="card"><h2>📚 التحدي الدراسي</h2><p>خطط ذكية ونصائح تخصصية لـ 12 مساراً أكاديمياً</p></div>', unsafe_allow_html=True)
-        if st.button("دخول التحدي الدراسي", key="btn_study"): 
-            navigate_to('study')
-            st.rerun()
-
-        st.markdown('<div class="card"><h2>🤖 منصة التطوير الذاتي الشاملة</h2><p>مساعد ذكي عفوي يرد على كافة استفساراتك ويشرح لك محتويات وأقسام الموقع فوراً</p></div>', unsafe_allow_html=True)
-        if st.button("دخول الذكاء الاصطناعي", key="btn_ai"): 
-            navigate_to('ai_chat')
-            st.rerun()
-
-# --- 2. صفحة التحدي الرياضي ---
-elif st.session_state.current_page == 'fitness':
-    st.title("🏋️ التحدي الرياضي الذكي")
-    if st.button("⬅️ العودة للرئيسية", key="back_fit"): 
-        navigate_to('home')
-        st.rerun()
-    
-    c1, c2 = st.columns([1, 1])
-    with c1:
-        st.subheader("🔢 بيانات الجسم")
-        weight = st.number_input("الوزن (كجم):", 30.0, 250.0, 75.0)
-        height = st.number_input("الطول (سم):", 100.0, 250.0, 175.0)
-        age = st.number_input("العمر:", 10, 90, 22)
-    with c2:
-        st.subheader("⚡ مستوى النشاط")
-        activity = st.radio("نشاطك الأسبوعي:", 
-                            ["خامل جداً", "تمارين خفيفة (1-2 يوم)", "نشاط متوسط (3-4 أيام)", "نشاط مكثف (5-6 أيام)", "محترف/بطل رياضي"])
-        goal = st.selectbox("هدفك الحالي:", ["تنشيف (خسارة دهون)", "تضخيم (بناء عضل)", "لياقة عامة"])
-
-    if st.button("📊 توليد التقرير البدني والنصائح"):
-        bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5
-        acts = {"خامل جداً": 1.2, "تمارين خفيفة (1-2 يوم)": 1.375, "نشاط متوسط (3-4 أيام)": 1.55, "نشاط مكثف (5-6 أيام)": 1.725, "محترف/بطل رياضي": 1.9}
-        tdee = bmr * acts[activity]
-        
-        st.success(f"سعرات المحافظة: {int(tdee)} سعرة. احتياجك لهدفك: {int(tdee-500 if 'خسارة' in goal else tdee+400 if 'بناء' in goal else tdee)} سعرة.")
-        
-        st.markdown("### 💡 نصائح رياضية متنوعة لك:")
-        fitness_advices = [
-            "✅ **قاعدة الـ 10%:** لا تزد شدة تمارينك أكثر من 10% أسبوعياً لتجنب الإصابات.",
-            "💧 **الترطيب:** اشرب 500 مل من الماء قبل التمرين بـ 30 دقيقة لتحسين الأداء.",
-            "😴 **الاستشفاء:** العضلات تبنى أثناء النوم وليس أثناء التمرين، حافظ على 8 ساعات نوم.",
-            "🍎 **التغذية:** ركز على البروتين (1.6 جم لكل كجم من وزنك) لدعم البناء العضلي.",
-            "⏱️ **الراحة:** لا تتجاوز 90 ثانية راحة بين الجلسات إذا كان هدفك رفع اللياقة.",
+    col1, col2 = st.columns(2)            "⏱️ **الراحة:** لا تتجاوز 90 ثانية راحة بين الجلسات إذا كان هدفك رفع اللياقة.",
             "🧘 **الإطالة:** خصص 10 دقائق بعد التمرين للإطالات لتقليل آلام العضلات."
         ]
         selected_advices = random.sample(fitness_advices, 3)
